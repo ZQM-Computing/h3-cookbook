@@ -1,0 +1,19 @@
+[project]
+name = "h3-patterns"
+version = "0.1.0"
+description = "H3 hexagonal grid patterns for geospatial aggregation"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "ZQM Computing", email = "zqmcomputing@gmail.com"}]
+keywords = ["h3", "hexagonal-binning", "aggregation", "grid", "geospatial"]
+
+[project.urls]
+Homepage = "https://github.com/ZQM-Computing/h3-patterns"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
