@@ -1,39 +1,76 @@
 # H3 Patterns
 
-Production-tested H3 hexagonal hierarchical grid patterns for geospatial aggregation and indexing.
+[![CI](https://github.com/ZQM-Computing/h3-patterns/actions/workflows/ci.yml/badge.svg)](https://github.com/ZQM-Computing/h3-patterns/actions/workflows/ci.yml)
+
+Production-tested H3 hexagonal hierarchical grid patterns for geospatial aggregation and indexing — point-to-cell, binning, visualization, grid comparisons, and DuckDB integration.
 
 ## Who this is for
 
-Data scientists, urban planners, and logistics analysts.
+Data scientists, urban planners, and logistics analysts who aggregate point data into regular cells. H3's hexagonal grid avoids the distortion quirks of square grids and nests cleanly across resolutions.
 
-## What's inside
+## Prerequisites
 
-- `examples/` — Runnable scripts with sample data
-- `tests/` — Validation tests for each pattern
+- Python 3.11+
+- `h3 >= 4.0`, `duckdb >= 1.0` (for the DuckDB example)
+
+```bash
+pip install h3 duckdb
+```
+
+## Quickstart
+
+```bash
+# Index a point and inspect its cell — self-contained, synthetic data
+python examples/01-indexing/run.py
+
+# Aggregate points into cells
+python examples/02-aggregation/run.py
+```
 
 ## Patterns
 
-| # | Pattern | Description |
-|---|---------|-------------|
-| 1 | Indexing | Point to cell, cell to point |
-| 2 | Aggregation | Bin and aggregate by H3 cell |
-| 3 | Visualization | Static and interactive maps |
-| 4 | Comparison | H3 vs S2 vs Geohash |
-| 5 | DuckDB integration | H3 in analytical queries |
-| 6 | Performance | Benchmarks and optimization |
+| # | Example | What it demonstrates |
+|---|---------|----------------------|
+| 01 | `01-indexing` | Point → H3 cell and cell → point round-trips |
+| 02 | `02-aggregation` | Binning synthetic points and aggregating counts by cell |
+| 03 | `03-visualization` | Static and interactive maps of H3 grids (center cell + neighbors) |
+| 04 | `04-comparison` | H3 vs. S2 vs. geohash across resolutions |
+| 05 | `05-duckdb-integration` | H3 in analytical SQL via the DuckDB H3 community extension |
+| 06 | `06-performance` | Benchmarks: indexing throughput and optimization notes |
 
-## Requirements
+## Repository layout
 
-- Python 3.11+
-- h3 >= 4.0
-- DuckDB >= 1.0
+```
+h3-patterns/
+├── examples/
+│   ├── 01-indexing/run.py
+│   └── ... (one run.py per pattern, 6 total)
+├── tests/
+│   └── test_patterns.py     # py_compile syntax checks for every example
+├── pyproject.toml
+├── README.md
+├── LICENSE
+└── CONTRIBUTING.md
+```
 
-## Quick start
+## Validation
 
 ```bash
-pip install -e .
-pytest
+pip install pytest
+pytest            # verifies every example compiles
 ```
+
+CI runs `ruff check` / `ruff format --check` and the pytest suite on every push and pull request.
+
+## Roadmap
+
+- Parent/child traversal patterns for drill-down dashboards
+- H3 + GeoParquet: storing cell IDs as partition columns
+- Compact vs. uncompacted set trade-offs at scale
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues to zqmcomputing@gmail.com — please do not open a public issue for those.
 
 ## More from this series
 
@@ -68,3 +105,8 @@ MIT — see LICENSE file.
 
 *Part of [ZQM Labs](https://github.com/ZQM-Computing) — games, gear & a little mischief.*
 
+*Part of [ZQM Computing](https://github.com/ZQM-Computing) — games, gear & a little mischief.*
+
+## License
+
+MIT — see [LICENSE](LICENSE).
