@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
 """Example 01: H3 indexing — point to cell, cell to point."""
+
 import h3
 
 # Point to H3 cell

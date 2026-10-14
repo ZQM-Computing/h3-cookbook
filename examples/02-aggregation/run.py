@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
 """Example 02: Aggregate points by H3 cell."""
+
 import h3
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Create synthetic points
 np.random.seed(42)
@@ -17,13 +17,9 @@ cells = [h3.latlng_to_cell(lat, lng, resolution) for lat, lng in zip(lats, lngs)
 
 # Aggregate by cell
 df = pd.DataFrame({"cell": cells, "value": values})
-agg = df.groupby("cell").agg(
-    count=("value", "count"),
-    mean=("value", "mean"),
-    sum=("value", "sum")
-).reset_index()
+agg = df.groupby("cell").agg(count=("value", "count"), mean=("value", "mean"), sum=("value", "sum")).reset_index()
 
 print(f"Total points: {n}")
 print(f"Unique H3 cells: {len(agg)}")
-print(f"Top 5 cells by count:")
+print("Top 5 cells by count:")
 print(agg.nlargest(5, "count")[["cell", "count", "mean"]])

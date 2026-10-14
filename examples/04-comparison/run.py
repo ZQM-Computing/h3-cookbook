@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
 """Example 04: Compare H3 with S2 and Geohash."""
+
 import h3
 
 lat, lng = 29.02, -80.93
@@ -26,6 +26,6 @@ for res in range(5, 16, 2):
     children = h3.cell_to_children(c, res + 2) if res < 15 else []
     print(f"  Res {res}: {c}")
     if parent:
-        print(f"    Parent (res {res-2}): {parent}")
+        print(f"    Parent (res {res - 2}): {parent}")
     if children:
-        print(f"    Children (res {res+2}): {len(children)} cells")
+        print(f"    Children (res {res + 2}): {len(children)} cells")

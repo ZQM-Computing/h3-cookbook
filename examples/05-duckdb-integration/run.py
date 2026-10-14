@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
 """Example 05: H3 in DuckDB analytical queries."""
+
 import duckdb
 
 # Load DuckDB H3 extension (community extension)
