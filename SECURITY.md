@@ -1,15 +1,31 @@
-# Security policy
+# Security Policy
 
-## Supported version
+Report vulnerabilities to zqmcomputing@gmail.com.
 
-Security fixes are applied to the `main` branch. This repository contains H3 grid patterns and examples; it is not a hosted service.
+## Scope
 
-## Reporting a vulnerability
+- All ZQM Computing public repositories
+- ZQM Labs infrastructure and tooling
 
-Email **zqmcomputing@gmail.com** with the subject `h3-patterns security` if you find a vulnerability in the example code or workflow configuration. Please do not open a public issue for a sensitive report.
+## Reporting
 
-Include the affected file, the impact you observed, and reproduction steps when available.
+- **Email**: zqmcomputing@gmail.com
+- **GitHub Security Advisory**: Use the "Security" tab on GitHub
+- Please do NOT open public issues for security vulnerabilities
 
-## Data note
+## What to Expect
 
-Examples aggregate synthetic point data into hexagons. Hexagonal aggregation is a privacy technique as well as an analytics one — but coarse hexagons over sparse real data can still single out individuals. When adapting these patterns, choose resolutions deliberately for the sensitivity of your data.
+- Acknowledgment within 48 hours
+- Assessment and severity classification within 5 business days
+- Coordinated disclosure timeline agreed upon with reporter
+
+## Supported Versions
+
+| Version | Supported |
+|---------|-----------|
+| latest  | Yes        |
+| < latest| No         |
+
+---
+
+*Part of the [ZQM Computing](https://github.com/ZQM-Computing) ecosystem.*
