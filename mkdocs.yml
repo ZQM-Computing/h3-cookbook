@@ -1,0 +1,22 @@
+site_name: h3-patterns
+site_description: H3 hexagonal hierarchical grid patterns ΓÇö indexing, aggregation, visualization, benchmarks
+site_author: ZQM Computing
+repo_url: https://github.com/ZQM-Computing/h3-patterns
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+
