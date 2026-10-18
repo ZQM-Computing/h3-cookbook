@@ -1,0 +1,135 @@
+# H3 Patterns
+
+<!-- ZQM-START -->
+<p align="center">
+  <strong>ZQM Computing — Geospatial Engineering & Scientific Computing</strong><br>
+  <a href="https://github.com/ZQM-Computing">ZQM Computing</a> •
+  <a href="https://github.com/ZQM-Labs">ZQM Labs</a>
+</p>
+<!-- ZQM-END -->
+
+[![CI](https://github.com/ZQM-Computing/h3-patterns/actions/workflows/ci.yml/badge.svg)](https://github.com/ZQM-Computing/h3-patterns/actions/workflows/ci.yml)
+
+Production-tested H3 hexagonal hierarchical grid patterns for geospatial aggregation and indexing — point-to-cell, binning, visualization, grid comparisons, and DuckDB integration.
+
+## Who this is for
+
+Data scientists, urban planners, and logistics analysts who aggregate point data into regular cells. H3's hexagonal grid avoids the distortion quirks of square grids and nests cleanly across resolutions.
+
+## Prerequisites
+
+- Python 3.11+
+- `h3 >= 4.0`, `duckdb >= 1.0` (for the DuckDB example)
+
+```bash
+pip install h3 duckdb
+```
+
+## Quickstart
+
+```bash
+# Index a point and inspect its cell — self-contained, synthetic data
+python examples/01-indexing/run.py
+
+# Aggregate points into cells
+python examples/02-aggregation/run.py
+```
+
+## Patterns
+
+| # | Example | What it demonstrates |
+|---|---------|----------------------|
+| 01 | `01-indexing` | Point → H3 cell and cell → point round-trips |
+| 02 | `02-aggregation` | Binning synthetic points and aggregating counts by cell |
+| 03 | `03-visualization` | Static and interactive maps of H3 grids (center cell + neighbors) |
+| 04 | `04-comparison` | H3 vs. S2 vs. geohash across resolutions |
+| 05 | `05-duckdb-integration` | H3 in analytical SQL via the DuckDB H3 community extension |
+| 06 | `06-performance` | Benchmarks: indexing throughput and optimization notes |
+
+## Repository layout
+
+```
+h3-patterns/
+├── examples/
+│   ├── 01-indexing/run.py
+│   └── ... (one run.py per pattern, 6 total)
+├── tests/
+│   └── test_patterns.py     # py_compile syntax checks for every example
+├── pyproject.toml
+├── README.md
+├── LICENSE
+└── CONTRIBUTING.md
+```
+
+## Validation
+
+```bash
+pip install pytest
+pytest            # verifies every example compiles
+```
+
+CI runs `ruff check` / `ruff format --check` and the pytest suite on every push and pull request.
+
+## Roadmap
+
+- Parent/child traversal patterns for drill-down dashboards
+- H3 + GeoParquet: storing cell IDs as partition columns
+- Compact vs. uncompacted set trade-offs at scale
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues to zqmcomputing@gmail.com — please do not open a public issue for those.
+
+## More from this series
+
+- [postgis-patterns](https://github.com/ZQM-Computing/postgis-patterns) — Production PostGIS patterns: spatial indexing, joins & KNN, SRID management, vector tiles, data quality, partitioning
+- [duckdb-spatial-patterns](https://github.com/ZQM-Computing/duckdb-spatial-patterns) — DuckDB Spatial patterns for analytical geospatial SQL: GeoParquet, spatial joins, KNN, H3 aggregation — no server required
+- [pgrouting-patterns](https://github.com/ZQM-Computing/pgrouting-patterns) — pgRouting network analysis on PostGIS: shortest path, driving distance, isochrones, turn restrictions, traffic-aware routing
+- [geopandas-patterns](https://github.com/ZQM-Computing/geopandas-patterns) — GeoPandas/Shapely patterns for Python geospatial workflows: spatial joins, CRS handling, overlays, interpolation, performance
+- [gdal-patterns](https://github.com/ZQM-Computing/gdal-patterns) — GDAL/OGR command-line patterns: conversion, reprojection, clipping, mosaicking — production-tested, runnable examples
+- [stac-patterns](https://github.com/ZQM-Computing/stac-patterns) — STAC patterns for geospatial data discovery: catalogs, item validation, search API, bulk operations, cloud deployment
+- [maplibre-patterns](https://github.com/ZQM-Computing/maplibre-patterns) — MapLibre GL JS patterns for frontend vector tile rendering: custom layers, 3D terrain, performance tuning, interactive maps
+- [cog-patterns](https://github.com/ZQM-Computing/cog-patterns) — Cloud Optimized GeoTIFF patterns: creation, validation, TiTiler serving, xarray integration, performance benchmarking
+- [geoparquet-patterns](https://github.com/ZQM-Computing/geoparquet-patterns) — GeoParquet patterns for columnar geospatial analytics: partitioning, predicate pushdown, DuckDB/Spark integration
+- [qgis-resources](https://github.com/ZQM-Computing/qgis-resources) — QGIS expressions, PyQGIS snippets, Processing scripts, styles, and QField field-collection guides
+- [geospatial-api-reference](https://github.com/ZQM-Computing/geospatial-api-reference) — OGC API – Features reference implementation with FastAPI and PostGIS backends
+- [ollama-fleet-patterns](https://github.com/ZQM-Computing/ollama-fleet-patterns) — Ollama fleet operations: model management, health checks, load-spreading, VRAM budgeting, dependency-light RAG
+- [proxmox-ceph-operations](https://github.com/ZQM-Computing/proxmox-ceph-operations) — Proxmox VE + Ceph operations runbooks: health checks, backup discipline, OSD replacement, upgrade checklists
+- [geospatial-patterns](https://github.com/ZQM-Computing/geospatial-patterns) — Umbrella index for all ZQM geospatial pattern repos
+
+## Documentation and validation
+
+For setup instructions, reproducible examples, data provenance, CRS/SRID assumptions, security guidance, and dependency labels, follow the [ZQM geospatial repository documentation standard](https://github.com/ZQM-Computing/geospatial-patterns/blob/main/docs/repository-documentation-standard.md).
+
+The configured CI workflow is the source of truth for automated checks. A passing workflow establishes only that its checks passed for that commit; it does not certify production deployment or prove that every dependency and operating environment was covered.
+
+## License
+
+MIT — see LICENSE file.
+
+## Related repositories
+
+- [ZQM Geospatial Patterns](https://github.com/ZQM-Computing/geospatial-patterns) — umbrella index of all geospatial pattern repos
+- [postgis-patterns](https://github.com/ZQM-Computing/postgis-patterns) — production PostGIS patterns & best practices
+- [duckdb-spatial-patterns](https://github.com/ZQM-Computing/duckdb-spatial-patterns) — DuckDB Spatial patterns for analytical geospatial SQL
+- [geospatial-api-reference](https://github.com/ZQM-Computing/geospatial-api-reference) — OGC API - Features with FastAPI + PostGIS
+- [qgis-resources](https://github.com/ZQM-Computing/qgis-resources) — QGIS expressions, PyQGIS, styles, and QField guides
+- [proxmox-ceph-operations](https://github.com/ZQM-Computing/proxmox-ceph-operations) — Proxmox VE + Ceph operations runbooks
+- [ollama-fleet-patterns](https://github.com/ZQM-Computing/ollama-fleet-patterns) — Ollama fleet operations & a minimal RAG reference
+
+*Part of [ZQM Computing](https://github.com/ZQM-Computing) — geospatial engineering, scientific computing, and infrastructure patterns.*
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+<!-- ZQM-FOOTER-START -->
+---
+
+<p align="center">
+  <em>Play more. Plan less.</em><br>
+  <a href="https://zqmlabs.com">zqmlabs.com</a> •
+  <a href="https://github.com/ZQM-Labs">ZQM Labs</a> •
+  <a href="https://github.com/ZQM-Computing">ZQM Computing</a>
+</p>
+<!-- ZQM-FOOTER-END -->
