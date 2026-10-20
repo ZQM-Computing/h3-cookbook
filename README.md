@@ -14,6 +14,16 @@
 
 Production-tested H3 hexagonal hierarchical grid patterns for geospatial aggregation and indexing — point-to-cell, binning, visualization, grid comparisons, and DuckDB integration.
 
+## Repository role and status
+
+**Status:** Active, public.
+
+**What this repository is:** H3 hexagonal hierarchical grid patterns — point-to-cell indexing, binning and aggregation, visualization, grid comparisons, and DuckDB integration.
+
+**What it contributes:** Part of the ZQM Computing public geospatial portfolio — production-grade pattern and reference repositories that document geospatial engineering practice across the stack. This repository is the reusable pattern library for its layer: working code and runbooks that practitioners can lift into their own pipelines, and portfolio evidence of the engineering practice behind ZQM Computing. The umbrella index for the series is [geospatial-patterns](https://github.com/ZQM-Computing/geospatial-patterns).
+
+**Standing:** The portfolio program was completed and Tier-1 hardened on 2026-10-15, with prose CI enforced as required status checks. This repository is standalone — no other repository or deployment depends on it.
+
 ## Who this is for
 
 Data scientists, urban planners, and logistics analysts who aggregate point data into regular cells. H3's hexagonal grid avoids the distortion quirks of square grids and nests cleanly across resolutions.
