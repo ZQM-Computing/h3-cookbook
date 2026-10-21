@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   audit:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -39,15 +39,13 @@ jobs:
           done
           if [ -f pyproject.toml ]; then
             python - <<'PY'
-          import tomllib
-          from pathlib import Path
-          data = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
-          deps = data.get("project", {}).get("dependencies", [])
-          Path("/tmp/zqm-pyproject-requirements.txt").write_text("\n".join(deps) + ("\n" if deps else ""), encoding="utf-8")
-          PY
+import tomllib
+from pathlib import Path
+data = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+deps = data.get("project", {}).get("dependencies", [])
+Path("/tmp/zqm-pyproject-requirements.txt").write_text("\n".join(deps) + ("\n" if deps else ""), encoding="utf-8")
+PY
             if [ -s /tmp/zqm-pyproject-requirements.txt ]; then
-              found=1
-              python -m pip install --disable-pip-version-check pip-audit
               pip-audit -r /tmp/zqm-pyproject-requirements.txt
             fi
           fi
@@ -55,6 +53,7 @@ jobs:
       - name: Audit npm dependencies
         shell: bash
         run: |
+          set -euo pipefail
           if [ -f package-lock.json ]; then
             npm ci
             npm audit --audit-level=high
@@ -64,6 +63,7 @@ jobs:
       - name: Audit Go dependencies
         shell: bash
         run: |
+          set -euo pipefail
           if [ -f go.mod ]; then
             go run golang.org/x/vuln/cmd/govulncheck@latest ./...
           else
