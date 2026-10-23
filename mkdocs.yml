@@ -2,7 +2,7 @@ site_name: H3 Patterns
 site_url: https://h3.zqmlabs.com/
 site_description: H3 hexagonal hierarchical grid patterns — indexing, aggregation, visualization, benchmarks
 site_author: ZQM Computing
-repo_url: https://github.com/ZQM-Computing/h3-patterns
+repo_url: https://github.com/ZQM-Computing/h3-cookbook
 
 theme:
   name: material

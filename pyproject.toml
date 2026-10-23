@@ -1,5 +1,5 @@
 [project]
-name = "h3-patterns"
+name = "h3-cookbook"
 version = "0.1.0"
 description = "H3 hexagonal grid patterns for geospatial aggregation"
 readme = "README.md"
@@ -9,7 +9,7 @@ authors = [{name = "ZQM Computing", email = "zqmcomputing@gmail.com"}]
 keywords = ["h3", "hexagonal-binning", "aggregation", "grid", "geospatial"]
 
 [project.urls]
-Homepage = "https://github.com/ZQM-Computing/h3-patterns"
+Homepage = "https://github.com/ZQM-Computing/h3-cookbook"
 
 [tool.ruff]
 line-length = 120

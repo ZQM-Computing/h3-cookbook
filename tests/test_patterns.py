@@ -1,4 +1,4 @@
-"""Tests for h3-patterns."""
+"""Tests for h3-cookbook."""
 
 import subprocess
 import sys
