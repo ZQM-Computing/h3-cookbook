@@ -10,6 +10,7 @@
 <!-- markdownlint-enable MD033 -->
 <!-- ZQM-END -->
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![GitHub](https://img.shields.io/github/stars/ZQM-Computing/h3-cookbook?style=social)
 [![CI](https://github.com/ZQM-Computing/h3-patterns/actions/workflows/ci.yml/badge.svg)](https://github.com/ZQM-Computing/h3-patterns/actions/workflows/ci.yml)
 
 Production-tested H3 hexagonal hierarchical grid patterns for geospatial aggregation and indexing — point-to-cell, binning, visualization, grid comparisons, and DuckDB integration.
