@@ -23,7 +23,7 @@ def run_example(example: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
             env=env,
             text=True,
             capture_output=True,
-            timeout=180,
+            timeout=90,
             check=True,
         )
     except subprocess.CalledProcessError as exc:
@@ -33,23 +33,30 @@ def run_example(example: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
         ) from exc
 
 
-def test_all_examples_execute(tmp_path: Path) -> None:
-    """Every advertised example runs, not just compiles."""
-    assert len(EXAMPLES) == 6, f"Expected six runnable examples, found {len(EXAMPLES)}"
-    outputs = {}
-    for example in EXAMPLES:
-        example_dir = tmp_path / example.parent.name
-        example_dir.mkdir()
-        result = run_example(example, example_dir)
-        outputs[example.parent.name] = result.stdout
-
-    assert "H3 cell:" in outputs["01-indexing"]
-    assert "Total points: 1000" in outputs["02-aggregation"]
-    assert "Saved to h3_grid.png" in outputs["03-visualization"]
-    assert "Saved to h3_heatmap.png" in outputs["03-visualization"]
-    assert "Boundary vertices:" in outputs["04-comparison"]
-    assert "Aggregation by H3 cell:" in outputs["05-duckdb-integration"]
-    assert "Point-to-cell: 10000 points" in outputs["06-performance"]
+@pytest.mark.parametrize(
+    ("example_name", "expected_output"),
+    [
+        ("01-indexing", "H3 cell:"),
+        ("02-aggregation", "Total points: 1000"),
+        ("03-visualization", "Saved to h3_grid.png"),
+        ("04-comparison", "Boundary vertices:"),
+        ("05-duckdb-integration", "Aggregation by H3 cell:"),
+        ("06-performance", "Point-to-cell: 10000 points"),
+    ],
+)
+def test_example_executes(
+    tmp_path: Path, example_name: str, expected_output: str
+) -> None:
+    """Run each example independently so failures identify the exact pattern."""
+    example = EXAMPLES_DIR / example_name / "run.py"
+    assert example.is_file(), f"Missing runnable example: {example.relative_to(ROOT)}"
+    result = run_example(example, tmp_path)
+    assert expected_output in result.stdout, (
+        f"{example_name} did not print its expected output marker "
+        f"{expected_output!r}. stdout:\n{result.stdout}"
+    )
+    if example_name == "03-visualization":
+        assert "Saved to h3_heatmap.png" in result.stdout
 
 
 def test_visualization_outputs_are_valid_pngs(tmp_path: Path) -> None:
