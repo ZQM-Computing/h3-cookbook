@@ -16,15 +16,21 @@ def run_example(example: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
     """Execute one documented example and capture its output."""
     env = os.environ.copy()
     env.setdefault("MPLBACKEND", "Agg")
-    return subprocess.run(
-        [sys.executable, str(example)],
-        cwd=cwd,
-        env=env,
-        text=True,
-        capture_output=True,
-        timeout=180,
-        check=True,
-    )
+    try:
+        return subprocess.run(
+            [sys.executable, str(example)],
+            cwd=cwd,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=180,
+            check=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise AssertionError(
+            f"Example {example.relative_to(ROOT)} failed with exit code {exc.returncode}.\n"
+            f"stdout:\n{exc.stdout or '<empty>'}\nstderr:\n{exc.stderr or '<empty>'}"
+        ) from exc
 
 
 def test_all_examples_execute(tmp_path: Path) -> None:
