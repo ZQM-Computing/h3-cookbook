@@ -10,6 +10,25 @@ import pytest
 ROOT = Path(__file__).parent.parent
 EXAMPLES_DIR = ROOT / "examples"
 EXAMPLES = sorted(EXAMPLES_DIR.glob("*/run.py"))
+EXPECTED_EXAMPLES = {
+    "01-indexing",
+    "02-aggregation",
+    "03-visualization",
+    "04-comparison",
+    "05-duckdb-integration",
+    "06-performance",
+}
+
+
+def test_exact_example_inventory() -> None:
+    """Every advertised example has exactly one non-empty Python entry point."""
+    actual = {path.parent.name for path in EXAMPLES}
+    assert actual == EXPECTED_EXAMPLES, (
+        f"Example inventory mismatch. Missing: {sorted(EXPECTED_EXAMPLES - actual)}; "
+        f"unexpected: {sorted(actual - EXPECTED_EXAMPLES)}"
+    )
+    for example in EXAMPLES:
+        assert example.is_file() and example.stat().st_size > 0, f"Missing or empty entry point: {example}"
 
 
 def run_example(example: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
@@ -70,15 +89,10 @@ def test_visualization_outputs_are_valid_pngs(tmp_path: Path) -> None:
 
 
 def test_examples_compile() -> None:
-    """All Python examples compile independently."""
+    """Compile every Python example in memory without leaving bytecode artifacts."""
     for py_file in EXAMPLES:
-        subprocess.run(
-            [sys.executable, "-m", "py_compile", str(py_file)],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=True,
-        )
+        source = py_file.read_text(encoding="utf-8")
+        compile(source, str(py_file.relative_to(ROOT)), "exec")
 
 
 @pytest.mark.parametrize("required_file", ["README.md", "LICENSE"])
