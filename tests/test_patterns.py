@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import h3
 import pytest
 
 ROOT = Path(__file__).parent.parent
@@ -56,7 +57,7 @@ def run_example(example: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
     ("example_name", "expected_output"),
     [
         ("01-indexing", "H3 cell:"),
-        ("02-aggregation", "Total points: 1000"),
+        ("02-aggregation", "Aggregated point count: 1000"),
         ("03-visualization", "Saved to h3_grid.png"),
         ("04-comparison", "Boundary vertices:"),
         ("05-duckdb-integration", "Aggregation by H3 cell:"),
@@ -71,8 +72,32 @@ def test_example_executes(tmp_path: Path, example_name: str, expected_output: st
     assert expected_output in result.stdout, (
         f"{example_name} did not print its expected output marker {expected_output!r}. stdout:\n{result.stdout}"
     )
+    if example_name == "02-aggregation":
+        assert "Total points: 1000" in result.stdout
+        totals = {
+            line.split(":", 1)[0]: int(line.split(":", 1)[1].strip())
+            for line in result.stdout.splitlines()
+            if line.startswith(("Input value sum:", "Aggregated value sum:"))
+        }
+        assert totals["Input value sum"] == totals["Aggregated value sum"], (
+            f"Aggregation changed the total value: {totals}"
+        )
     if example_name == "03-visualization":
         assert "Saved to h3_heatmap.png" in result.stdout
+
+
+def test_h3_indexing_round_trip_and_boundary() -> None:
+    """A point's H3 cell centroid re-indexes to the same cell and has a valid boundary."""
+    latitude, longitude, resolution = 29.02, -80.93, 9
+    cell = h3.latlng_to_cell(latitude, longitude, resolution)
+    center_latitude, center_longitude = h3.cell_to_latlng(cell)
+    assert h3.latlng_to_cell(center_latitude, center_longitude, resolution) == cell
+
+    boundary = h3.cell_to_boundary(cell)
+    assert len(boundary) >= 5, f"Expected a valid H3 boundary, got {len(boundary)} vertices"
+    for vertex_latitude, vertex_longitude in boundary:
+        assert -90 <= vertex_latitude <= 90
+        assert -180 <= vertex_longitude <= 180
 
 
 def test_visualization_outputs_are_valid_pngs(tmp_path: Path) -> None:
