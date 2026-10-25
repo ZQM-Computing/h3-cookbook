@@ -30,10 +30,12 @@ jobs:
         run: |
           set -euo pipefail
           found=0
+          if [ -f requirements.txt ] || [ -f requirements-dev.txt ] || [ -f pyproject.toml ]; then
+            python -m pip install --disable-pip-version-check pip-audit
+          fi
           for manifest in requirements.txt requirements-dev.txt; do
             if [ -f "$manifest" ]; then
               found=1
-              python -m pip install --disable-pip-version-check pip-audit
               pip-audit -r "$manifest"
             fi
           done

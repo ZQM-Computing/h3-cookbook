@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   test:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,8 +24,8 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: |
-          pip install pytest
-          if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi
+          export PIP_DISABLE_PIP_VERSION_CHECK=1
+          timeout 300s python -m pip install --retries 2 --timeout 20 -e . pytest
       - name: Run tests
         run: |
           if [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
