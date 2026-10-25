@@ -64,7 +64,9 @@ jobs:
       - name: Install and test
         run: |
           export PIP_DISABLE_PIP_VERSION_CHECK=1
-          timeout 300s python -m pip install --retries 2 --timeout 20 -e . pytest
+          timeout 300s python -m pip install --retries 2 --timeout 20 -e . pytest ruff
+          python -m ruff check examples tests
+          python -m ruff format --check examples tests
           if find . -path './.git' -prune -o -type f \( -name 'test_*.py' -o -name '*_test.py' \) -print -quit | grep -q .; then
             python -m pytest -q
           else
