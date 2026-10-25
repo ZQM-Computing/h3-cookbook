@@ -127,6 +127,7 @@ def test_parent_child_relationships_and_multiresolution_aggregation() -> None:
     )
     assert all(count > 0 for count in rolled_up.values()), "Observed parent cells must have positive counts"
 
+
 def test_visualization_outputs_are_valid_pngs(tmp_path: Path) -> None:
     """The visualization example creates non-empty PNG files."""
     example = EXAMPLES_DIR / "03-visualization" / "run.py"
