@@ -63,10 +63,8 @@ jobs:
           python-version: "3.12"
       - name: Install and test
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
-          if [ -f pyproject.toml ] || [ -f setup.py ]; then python -m pip install -e .; fi
-          python -m pip install pytest
+          export PIP_DISABLE_PIP_VERSION_CHECK=1
+          timeout 300s python -m pip install --retries 2 --timeout 20 -e . pytest
           if find . -path './.git' -prune -o -type f \( -name 'test_*.py' -o -name '*_test.py' \) -print -quit | grep -q .; then
             python -m pytest -q
           else
