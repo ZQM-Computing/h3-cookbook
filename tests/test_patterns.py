@@ -102,10 +102,7 @@ def test_h3_indexing_round_trip_and_boundary() -> None:
 
 def test_parent_child_relationships_and_multiresolution_aggregation() -> None:
     """Fine-resolution counts roll up exactly to their parent cells."""
-    observations = [
-        (28.8 + index * 0.003, -81.1 + (index % 17) * 0.004)
-        for index in range(240)
-    ]
+    observations = [(28.8 + index * 0.003, -81.1 + (index % 17) * 0.004) for index in range(240)]
     counts_by_resolution: dict[int, dict[str, int]] = {}
     for resolution in (7, 8, 9):
         counts: dict[str, int] = {}
