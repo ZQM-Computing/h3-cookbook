@@ -17,7 +17,7 @@ colors = plt.cm.viridis(np.linspace(0, 1, len(neighbors)))
 
 for i, cell in enumerate(neighbors):
     boundary = h3.cell_to_boundary(cell)
-    poly = MplPolygon(boundary, closed=True, fill=True, facecolor=colors[i], edgecolor="black", alpha=0.7)
+    poly = MplPolygon([(lng, lat) for lat, lng in boundary], closed=True, fill=True, facecolor=colors[i], edgecolor="black", alpha=0.7)
     ax.add_patch(poly)
     center_lat, center_lng = h3.cell_to_latlng(cell)
     ax.text(center_lng, center_lat, cell[-5:], ha="center", va="center", fontsize=6)
@@ -37,7 +37,7 @@ unique, counts = np.unique(cells, return_counts=True)
 fig, ax = plt.subplots(figsize=(8, 8))
 for cell, count in zip(unique, counts):
     boundary = h3.cell_to_boundary(cell)
-    poly = MplPolygon(boundary, closed=True, fill=True, facecolor=plt.cm.Reds(count / max(counts)), edgecolor="gray")
+    poly = MplPolygon([(lng, lat) for lat, lng in boundary], closed=True, fill=True, facecolor=plt.cm.Reds(count / max(counts)), edgecolor="gray")
     ax.add_patch(poly)
 
 ax.set_aspect("equal")
