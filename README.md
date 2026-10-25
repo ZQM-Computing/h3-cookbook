@@ -86,11 +86,13 @@ h3-patterns/
 
 ```bash
 python -m pip install -e .
-python -m pip install pytest
+python -m pip install pytest ruff
+python -m ruff check examples tests
+python -m ruff format --check examples tests
 python -m pytest -q
 ```
 
-CI installs the declared runtime dependencies and executes all six examples, checks expected output markers, validates generated PNG artifacts, and compiles every example. The DuckDB integration test installs and loads the H3 community extension, so it also requires network access to the DuckDB extension repository.
+CI installs the declared runtime dependencies, enforces Ruff lint and formatting checks across `examples/` and `tests/`, and executes all six examples, checks expected output markers, validates generated PNG artifacts, and compiles every example. The DuckDB integration test installs and loads the H3 community extension, so it also requires network access to the DuckDB extension repository.
 
 ## Roadmap
 
