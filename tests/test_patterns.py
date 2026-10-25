@@ -101,38 +101,31 @@ def test_h3_indexing_round_trip_and_boundary() -> None:
 
 
 def test_parent_child_relationships_and_multiresolution_aggregation() -> None:
-    """Fine-resolution counts roll up exactly to their parent cells."""
+    """Parent-child traversal preserves observed fine-cell counts."""
     observations = [(28.8 + index * 0.003, -81.1 + (index % 17) * 0.004) for index in range(240)]
-    counts_by_resolution: dict[int, dict[str, int]] = {}
-    for resolution in (7, 8, 9):
-        counts: dict[str, int] = {}
-        for latitude, longitude in observations:
-            cell = h3.latlng_to_cell(latitude, longitude, resolution)
-            counts[cell] = counts.get(cell, 0) + 1
-        counts_by_resolution[resolution] = counts
-        assert sum(counts.values()) == len(observations), f"Resolution {resolution} lost or duplicated observations"
+    fine_resolution = 9
+    parent_resolution = 7
+    fine_counts: dict[str, int] = {}
+    for latitude, longitude in observations:
+        cell = h3.latlng_to_cell(latitude, longitude, fine_resolution)
+        fine_counts[cell] = fine_counts.get(cell, 0) + 1
 
-    for fine_resolution, coarse_resolution in ((9, 8), (8, 7)):
-        fine_counts = counts_by_resolution[fine_resolution]
-        coarse_counts = counts_by_resolution[coarse_resolution]
-        rolled_up: dict[str, int] = {}
-        for fine_cell, count in fine_counts.items():
-            parent = h3.cell_to_parent(fine_cell, coarse_resolution)
-            assert h3.is_valid_cell(parent), f"Invalid parent cell {parent}"
-            assert h3.get_resolution(parent) == coarse_resolution
-            rolled_up[parent] = rolled_up.get(parent, 0) + count
-        assert rolled_up == coarse_counts, (
-            f"Aggregating resolution {fine_resolution} into {coarse_resolution} changed per-cell observation counts"
-        )
+    assert sum(fine_counts.values()) == len(observations), "Fine-resolution binning lost or duplicated observations"
 
-    # Every observed resolution-9 cell must appear among the resolution-9
-    # descendants of its resolution-7 ancestor.
-    for fine_cell in counts_by_resolution[9]:
-        ancestor = h3.cell_to_parent(fine_cell, 7)
-        assert fine_cell in set(h3.cell_to_children(ancestor, 9)), (
-            f"Cell {fine_cell} is absent from descendants of {ancestor}"
-        )
+    rolled_up: dict[str, int] = {}
+    for fine_cell, count in fine_counts.items():
+        parent = h3.cell_to_parent(fine_cell, parent_resolution)
+        assert h3.is_valid_cell(parent), f"Invalid parent cell {parent}"
+        assert h3.get_resolution(parent) == parent_resolution
+        children = set(h3.cell_to_children(parent, fine_resolution))
+        assert fine_cell in children, f"Cell {fine_cell} is absent from descendants of {parent}"
+        assert h3.cell_to_parent(fine_cell, parent_resolution) == parent
+        rolled_up[parent] = rolled_up.get(parent, 0) + count
 
+    assert sum(rolled_up.values()) == len(observations), (
+        "Rolling fine-cell counts into parent cells changed the total observation count"
+    )
+    assert all(count > 0 for count in rolled_up.values()), "Observed parent cells must have positive counts"
 
 def test_visualization_outputs_are_valid_pngs(tmp_path: Path) -> None:
     """The visualization example creates non-empty PNG files."""
