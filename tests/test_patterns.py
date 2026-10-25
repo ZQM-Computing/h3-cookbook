@@ -100,6 +100,34 @@ def test_h3_indexing_round_trip_and_boundary() -> None:
         assert -180 <= vertex_longitude <= 180
 
 
+def test_parent_child_relationships_and_multiresolution_aggregation() -> None:
+    """Parent-child traversal preserves observed fine-cell counts."""
+    observations = [(28.8 + index * 0.003, -81.1 + (index % 17) * 0.004) for index in range(240)]
+    fine_resolution = 9
+    parent_resolution = 7
+    fine_counts: dict[str, int] = {}
+    for latitude, longitude in observations:
+        cell = h3.latlng_to_cell(latitude, longitude, fine_resolution)
+        fine_counts[cell] = fine_counts.get(cell, 0) + 1
+
+    assert sum(fine_counts.values()) == len(observations), "Fine-resolution binning lost or duplicated observations"
+
+    rolled_up: dict[str, int] = {}
+    for fine_cell, count in fine_counts.items():
+        parent = h3.cell_to_parent(fine_cell, parent_resolution)
+        assert h3.is_valid_cell(parent), f"Invalid parent cell {parent}"
+        assert h3.get_resolution(parent) == parent_resolution
+        children = set(h3.cell_to_children(parent, fine_resolution))
+        assert fine_cell in children, f"Cell {fine_cell} is absent from descendants of {parent}"
+        assert h3.cell_to_parent(fine_cell, parent_resolution) == parent
+        rolled_up[parent] = rolled_up.get(parent, 0) + count
+
+    assert sum(rolled_up.values()) == len(observations), (
+        "Rolling fine-cell counts into parent cells changed the total observation count"
+    )
+    assert all(count > 0 for count in rolled_up.values()), "Observed parent cells must have positive counts"
+
+
 def test_visualization_outputs_are_valid_pngs(tmp_path: Path) -> None:
     """The visualization example creates non-empty PNG files."""
     example = EXAMPLES_DIR / "03-visualization" / "run.py"
