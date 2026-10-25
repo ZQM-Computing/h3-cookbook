@@ -35,7 +35,7 @@ Data scientists, urban planners, and logistics analysts who aggregate point data
 - `h3 >= 4.0`, `duckdb >= 1.0` (for the DuckDB example)
 
 ```bash
-pip install h3 duckdb
+pip install -e .
 ```
 
 ## Quickstart
@@ -85,11 +85,12 @@ h3-patterns/
 ## Validation
 
 ```bash
-pip install pytest
-pytest            # verifies every example compiles
+python -m pip install -e .
+python -m pip install pytest
+python -m pytest -q
 ```
 
-CI runs `ruff check` / `ruff format --check` and the pytest suite on every push and pull request.
+CI installs the declared runtime dependencies and executes all six examples, checks expected output markers, validates generated PNG artifacts, and compiles every example. The DuckDB integration test installs and loads the H3 community extension, so it also requires network access to the DuckDB extension repository.
 
 ## Roadmap
 
