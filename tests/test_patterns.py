@@ -44,17 +44,12 @@ def run_example(example: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
         ("06-performance", "Point-to-cell: 10000 points"),
     ],
 )
-def test_example_executes(
-    tmp_path: Path, example_name: str, expected_output: str
-) -> None:
+def test_example_executes(tmp_path: Path, example_name: str, expected_output: str) -> None:
     """Run each example independently so failures identify the exact pattern."""
     example = EXAMPLES_DIR / example_name / "run.py"
     assert example.is_file(), f"Missing runnable example: {example.relative_to(ROOT)}"
     result = run_example(example, tmp_path)
-    assert expected_output in result.stdout, (
-        f"{example_name} did not print its expected output marker "
-        f"{expected_output!r}. stdout:\n{result.stdout}"
-    )
+    assert expected_output in result.stdout, f"{example_name} did not print its expected output marker {expected_output!r}. stdout:\n{result.stdout}"
     if example_name == "03-visualization":
         assert "Saved to h3_heatmap.png" in result.stdout
 
