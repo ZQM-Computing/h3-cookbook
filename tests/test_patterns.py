@@ -113,9 +113,7 @@ def test_parent_child_relationships_and_multiresolution_aggregation() -> None:
             cell = h3.latlng_to_cell(latitude, longitude, resolution)
             counts[cell] = counts.get(cell, 0) + 1
         counts_by_resolution[resolution] = counts
-        assert sum(counts.values()) == len(observations), (
-            f"Resolution {resolution} lost or duplicated observations"
-        )
+        assert sum(counts.values()) == len(observations), f"Resolution {resolution} lost or duplicated observations"
 
     for fine_resolution, coarse_resolution in ((9, 8), (8, 7)):
         fine_counts = counts_by_resolution[fine_resolution]
@@ -127,8 +125,7 @@ def test_parent_child_relationships_and_multiresolution_aggregation() -> None:
             assert h3.get_resolution(parent) == coarse_resolution
             rolled_up[parent] = rolled_up.get(parent, 0) + count
         assert rolled_up == coarse_counts, (
-            f"Aggregating resolution {fine_resolution} into {coarse_resolution} "
-            "changed per-cell observation counts"
+            f"Aggregating resolution {fine_resolution} into {coarse_resolution} changed per-cell observation counts"
         )
 
     # Every observed resolution-9 cell must appear among the resolution-9
