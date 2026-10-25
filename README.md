@@ -13,7 +13,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![GitHub](https://img.shields.io/github/stars/ZQM-Computing/h3-cookbook?style=social)
 [![CI](https://github.com/ZQM-Computing/h3-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/ZQM-Computing/h3-cookbook/actions/workflows/ci.yml)
 
-Runnable H3 examples for geospatial aggregation and indexing — point-to-cell, binning, visualization, grid comparisons, and DuckDB integration, with deterministic fixtures and automated checks.
+Runnable H3 hexagonal-grid examples for geospatial indexing, point-to-cell conversion, spatial aggregation, visualization, resolution comparisons, and DuckDB integration. Deterministic fixtures and automated checks demonstrate the documented patterns; choose resolution and aggregation methods for the analytical question and privacy context.
 
 ## Repository role and status
 
