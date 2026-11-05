@@ -59,7 +59,7 @@ package to install.
 ## Patterns
 
 | # | Example | What it demonstrates |
-|---|---------|----------------------|
+| --- | --------- | ---------------------- |
 | 01 | `01-indexing` | Point → H3 cell and cell → point round-trips |
 | 02 | `02-aggregation` | Binning synthetic points and aggregating counts by cell |
 | 03 | `03-visualization` | Static and interactive maps of H3 grids (center cell + neighbors) |
