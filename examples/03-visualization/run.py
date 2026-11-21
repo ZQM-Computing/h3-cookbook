@@ -24,6 +24,8 @@ for i, cell in enumerate(neighbors):
     center_lat, center_lng = h3.cell_to_latlng(cell)
     ax.text(center_lng, center_lat, cell[-5:], ha="center", va="center", fontsize=6)
 
+# Fit the axes to the patches before placing the tightly cropped image.
+ax.autoscale_view()
 ax.set_aspect("equal")
 ax.set_title(f"H3 Grid: {len(neighbors)} cells around {center}")
 plt.savefig("h3_grid.png", dpi=150, bbox_inches="tight")
@@ -48,6 +50,8 @@ for cell, count in zip(unique, counts):
     )
     ax.add_patch(poly)
 
+# Fit the axes to the patches before placing the tightly cropped image.
+ax.autoscale_view()
 ax.set_aspect("equal")
 ax.set_title("H3 Point Density Heatmap")
 plt.savefig("h3_heatmap.png", dpi=150, bbox_inches="tight")
